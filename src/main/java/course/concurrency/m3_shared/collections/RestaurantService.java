@@ -3,8 +3,7 @@ package course.concurrency.m3_shared.collections;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.*;
 
 public class RestaurantService {
 
@@ -26,9 +25,9 @@ public class RestaurantService {
     }
 
     public Set<String> printStat() {
-        final Map<String, Long> statMap = stat.stream().collect(groupingBy((name) -> name, counting()));
-        final Set<String> statSet = new HashSet<>();
-        statMap.forEach((name, count) -> statSet.add(name + " - " + count));
-        return statSet;
+        return stat.stream().collect(groupingBy((name) -> name, counting())).entrySet()
+                .stream()
+                .map(e -> e.getKey() + " - " + e.getValue())
+                .collect(toSet());
     }
 }
